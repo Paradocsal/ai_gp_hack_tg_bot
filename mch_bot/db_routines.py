@@ -27,25 +27,44 @@ def initialize_db():
 
 
 def add_user(chat_id):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
 
     cursor.execute('INSERT OR IGNORE INTO users (chat_id) VALUES (?)', (chat_id,))
-    conn.commit()
 
+    connection.commit()
     cursor.close()
-    conn.close()
+    connection.close()
 
 
 def add_timeseries_source_table(chat_id, link):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
 
     cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))
     user_id = cursor.fetchone()[0]
 
     cursor.execute('INSERT INTO links (user_id, link) VALUES (?, ?)', (user_id, link))
-    conn.commit()
 
+    connection.commit()
     cursor.close()
-    conn.close()
+    connection.close()
+
+
+def get_unique_links_with_chat_ids():
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute('''
+            SELECT DISTINCT chat_id, link 
+            FROM links 
+            JOIN users 
+            WHERE users.id == links.user_id
+        ''')
+    links_with_ids = cursor.fetchall()
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    return links_with_ids
