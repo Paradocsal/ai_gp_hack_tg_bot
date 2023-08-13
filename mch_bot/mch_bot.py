@@ -37,7 +37,7 @@ def create_keyboard_with_commands():
 
 
 def validate_link(link):
-    pattern = r'^https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+\/edit#gid=[0-9]+$'
+    pattern = r'^https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9-_]'
     if re.match(pattern, link):
         return True
     else:
@@ -105,7 +105,7 @@ def handle_get_reports(message):
 # noinspection SpellCheckingInspection
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    bot.reply_to(message, 'Я могу отвечать только на команды: /save_link и /delete_link.')
+    bot.reply_to(message, 'Я могу отвечать только на команды: /save_link и /delete_link.', reply_markup=create_keyboard_with_commands())
 
 
 bot.polling(none_stop=True)
