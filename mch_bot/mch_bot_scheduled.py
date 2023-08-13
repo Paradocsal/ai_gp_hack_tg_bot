@@ -26,11 +26,8 @@ def send_all_reports():
         send_report(current_link_and_chat_id[0], generate_report(current_link_and_chat_id[1]))
 
 
-send_all_reports()
+schedule.every(24).hours.do(send_all_reports())
 
-
-# schedule.every(24).hours.do(send_all_reports())
-#
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(1)

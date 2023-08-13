@@ -70,9 +70,7 @@ def pretty_timeseria(timeseria):
 
 
 def generate_report(google_sheet_link):
-    parser = GSheetsParser('''
-        https://docs.google.com/spreadsheets/d/1AcAuR951KcHvMK1JIJJ_BThaO1r1PtkiBJBsRGYTlSw/edit#gid=0
-    ''')
+    parser = GSheetsParser(google_sheet_link)
 
     user_timeseria = pretty_timeseria(pd.DataFrame(parser.parse()))
 
