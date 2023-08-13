@@ -69,9 +69,12 @@ def pretty_timeseria(timeseria):
     return timeseria
 
 
+# noinspection SpellCheckingInspection
 def generate_report(google_sheet_link):
     parser = GSheetsParser(google_sheet_link)
 
     user_timeseria = pretty_timeseria(pd.DataFrame(parser.parse()))
 
-    return f'Размер ваших данных: {user_timeseria.shape}'
+    return f'''
+    Отчёт по креативу: \n\nНазвание препарата: {user_timeseria.drug_name[1]}.\nТип креатива: {user_timeseria.adv_format[1]}.
+    '''
