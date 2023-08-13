@@ -51,6 +51,20 @@ def add_timeseries_source_table(chat_id, link):
     connection.close()
 
 
+def delete_timeseries_source_table(chat_id, link):
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))
+    user_id = cursor.fetchone()[0]
+
+    cursor.execute('DELETE FROM links WHERE user_id = ? AND link = ?', (user_id, link))
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
 def get_unique_links_with_chat_ids():
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
@@ -68,3 +82,19 @@ def get_unique_links_with_chat_ids():
     connection.close()
 
     return links_with_ids
+
+
+def get_saved_links(chat_id):
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))
+    user_id = cursor.fetchone()[0]
+
+    cursor.execute('SELECT link FROM links WHERE user_id = ?', (user_id,))
+    links = [row[0] for row in cursor.fetchall()]
+
+    cursor.close()
+    connection.close()
+
+    return links
