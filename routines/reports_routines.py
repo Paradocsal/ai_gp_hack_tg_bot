@@ -1,4 +1,6 @@
 from google_sheets_parser.google_sheets_parser import GSheetsParser
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 
 class Reporter:
@@ -6,12 +8,12 @@ class Reporter:
         self.parser = GSheetsParser(sheet_link)
         self.user_timeseries = self.parser.parse()
 
-    def validate_report(self):
+    def validate_report(self): # Этот метод даёт сигнал, отравлять отчёт или нет
         ...
 
         return True
 
-    def generate_report_text(self):
+    def generate_report_text(self): # Текст отчёта
         ...
 
         return f'''
@@ -19,9 +21,18 @@ class Reporter:
         '''
 
     def generate_report_images(self):
-        ...
+        report_images = []
 
-        return []
+        plt.plot([1, 2, 3, 4, 2, 3])
+        plt.ylabel('some numbers')
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+
+        report_images.append(buffer) # Сюда можно положить много фото - они отправятся по очереди
+
+        return report_images
 
 
 def send_report(bot, chat_id, sheet_link):
