@@ -2,7 +2,7 @@ import sqlite3
 
 
 def initialize_db():
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('''
@@ -27,7 +27,7 @@ def initialize_db():
 
 
 def add_user(chat_id):
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('INSERT OR IGNORE INTO users (chat_id) VALUES (?)', (chat_id,))
@@ -38,7 +38,7 @@ def add_user(chat_id):
 
 
 def add_timeseries_source_table(chat_id, link):
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))
@@ -52,7 +52,7 @@ def add_timeseries_source_table(chat_id, link):
 
 
 def delete_timeseries_source_table(chat_id, link):
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))
@@ -66,7 +66,7 @@ def delete_timeseries_source_table(chat_id, link):
 
 
 def get_unique_links_with_chat_ids():
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('''
@@ -85,7 +85,7 @@ def get_unique_links_with_chat_ids():
 
 
 def get_saved_links(chat_id):
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('../mch_bot/database.db')
     cursor = connection.cursor()
 
     cursor.execute('SELECT id FROM users WHERE chat_id = ?', (chat_id,))

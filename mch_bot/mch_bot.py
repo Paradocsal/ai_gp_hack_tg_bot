@@ -1,8 +1,9 @@
 import telebot
 import re
-from db_routines import initialize_db, add_user, add_timeseries_source_table, delete_timeseries_source_table, \
+
+from routines.db_routines import initialize_db, add_user, add_timeseries_source_table, delete_timeseries_source_table, \
     get_saved_links
-from report_generator import generate_report
+from routines.reports_routines import send_report
 
 initialize_db()
 
@@ -99,7 +100,7 @@ def handle_get_reports(message):
         bot.reply_to(message, 'Нет ссылок для формирования отчётов.', reply_markup=create_keyboard_with_commands())
     else:
         for current_link in links:
-            bot.send_message(message.chat.id, generate_report(current_link))
+            send_report(bot, message.chat.id, current_link)
 
 
 # noinspection SpellCheckingInspection
