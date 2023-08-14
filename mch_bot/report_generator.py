@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, '../')
 
-from google_sheets_parser.google_sheets_parser import GSheetsParser
+from mch_bot.google_sheets_parser import GSheetsParser
 
 
 # noinspection SpellCheckingInspection
@@ -44,6 +44,21 @@ def pretty_timeseria(timeseria):
         timeseria.campaign_name.str.contains('aknaucer')), 'drug_name'] = 'aknaucer'
     timeseria.loc[timeseria['drug_name'].isna(), 'drug_name'] = 'none'
 
+
+    timeseria.loc[(timeseria.campaign_name.str.contains('фармацевт')) | (
+        timeseria.campaign_name.str.contains('pharma')),'medic_group'] = 'pharmacy'
+    timeseria.loc[(timeseria.campaign_name.str.contains('терапевт')) | (
+        timeseria.campaign_name.str.contains('terapist'))| (timeseria.campaign_name.str.contains('therapist')),'medic_group'] = 'therapist'
+    timeseria.loc[(timeseria.campaign_name.str.contains('pediatrician')) | (
+        timeseria.campaign_name.str.contains('педиатр')),'medic_group']  = 'pediatricias'
+    timeseria.loc[(timeseria.campaign_name.str.contains('surgeon')) | (
+        timeseria.campaign_name.str.contains('хирург')),'medic_group']  = 'surgeon'
+    timeseria.loc[(timeseria.campaign_name.str.contains('neurologist')) | (
+        timeseria.campaign_name.str.contains('невролог')),'medic_group']  = 'neurologist'
+    timeseria.loc[(timeseria.campaign_name.str.contains('gastro')) | (
+        timeseria.campaign_name.str.contains('гастро')),'medic_group']  = 'gastro'
+    timeseria.medic_group = timeseria.medic_group.fillna('none')
+
     timeseria.loc[(timeseria.campaign_name.str.contains('carousel')) | (
         timeseria.campaign_name.str.contains('carusel')), 'adv_format'] = 'carousel'
     timeseria.loc[
@@ -57,8 +72,6 @@ def pretty_timeseria(timeseria):
           (timeseria.campaign_name.str.contains('баннеры')) | (timeseria.campaign_name.str.contains('banner')) |
           (timeseria.campaign_name.str.contains('video')) | (timeseria.campaign_name.str.contains('видео')) |
           (timeseria.campaign_name.str.contains('multiformat'))), 'adv_format'] = 'others'
-
-    # TODO - Добавить тип ЦА
 
     timeseria = timeseria.drop('campaign_id', axis=1)
     timeseria = timeseria.drop('campaign_name', axis=1)
@@ -75,5 +88,6 @@ def generate_report(google_sheet_link):
     ''')
 
     user_timeseria = pretty_timeseria(pd.DataFrame(parser.parse()))
+    
 
     return f'Размер ваших данных: {user_timeseria.shape}'
