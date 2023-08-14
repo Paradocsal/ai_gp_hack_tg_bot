@@ -4,6 +4,7 @@ from google_sheets_parser.google_sheets_parser import GSheetsParser
 class Reporter:
     def __init__(self, sheet_link):
         self.parser = GSheetsParser(sheet_link)
+        self.user_timeseries = self.parser.parse()
 
     def validate_report(self):
         ...
